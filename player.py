@@ -19,6 +19,25 @@ class Player:
 
     _color_list = [BLUE, WHITE, BLACK, RED, YELLOW, GREEN, PINK]
 
+    def get_size(self):
+        return self._size
+
+    def change_x(self, value, width):
+        self._curX += value
+
+        if self._curX < 0:
+            self._curX = 0
+        elif self._curX > width - self.get_size():
+            self._curX = width - self.get_size()
+
+    def change_y(self, value, height):
+        self._curY += value
+
+        if self._curY < 0:
+            self._curY = 0
+        elif self._curY > height - self.get_size():
+            self._curY = height - self.get_size()
+
     def inc_size(self):
         self._size += 5
         if self._size >= 100:

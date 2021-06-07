@@ -5,17 +5,23 @@ import player
 
 pygame.init()
 
-
+GAME = 0
+MENU = 1
 
 
 
 
 
 if __name__ == '__main__':
+    pl1 = None
+    pl2 = None
+    joystick1 = None
+    joystick2 = None
 
-    pl = player.Player()
+    prog_mode = GAME
 
     screen = pygame.display.set_mode((900, 500))
+    #screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
     clock = pygame.time.Clock()
 
@@ -23,17 +29,21 @@ if __name__ == '__main__':
     font_height = font.get_linesize()
     event_text = []
 
-    if pygame.joystick.get_count() > 0:
-        joystick = pygame.joystick.Joystick(0)
-        joystick.init()
-        print("Joystick found and initialized!")
-        print("There are " + str(joystick.get_numaxes()) + " axes,")
-        print("There are " + str(joystick.get_numbuttons()) + " buttons,")
-        print("There are " + str(joystick.get_numhats()) + " hats on this joystick")
+    if pygame.joystick.get_count() > 1:
+        joystick1 = pygame.joystick.Joystick(0)
+        joystick1.init()
+        pl1 = player.Player()
+        joystick2 = pygame.joystick.Joystick(1)
+        joystick2.init()
+        pl2 = player.Player()
+        print("Two Joystick found and initialized!")
+    elif pygame.joystick.get_count() > 0:
+        joystick1 = pygame.joystick.Joystick(0)
+        joystick1.init()
+        print("One Joystick found and initialized!")
+        pl1 = player.Player()
     else:
         print("No joystick.")
-    newX = 0
-    newY = 0
     
     run = True
     while run:
@@ -42,16 +52,10 @@ if __name__ == '__main__':
 
         clock.tick(60)
 
-        newX = (joystick.get_axis(0).real * 5) + newX
-        newY = (joystick.get_axis(1).real * 5) + newY
-
-        pl._curX = newX
-        pl._curY = newY
-
-
-        pl.draw_player(screen)
-
-
+        if prog_mode == GAME:
+            playgame(screen, pl1, pl2, joystick1, joystick2)
+        elif prog_mode == MENU:
+            menu()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -70,11 +74,21 @@ if __name__ == '__main__':
                 elif joystick.get_button(4) == 1:
                     pl.dec_size()
 
+def playgame(screen, pl1, pl2, joystick1, joystick2):
 
+    pl1.change_y(joystick1.get_axis(1).real * 5, screen.get_height())
 
+    pl1.change_z(joystick1.get_axis(0).real * 5, screen.get_width())
 
+    pl1.draw_player(screen)
 
+    if joystick2 is not None:
+        pl2.change_y(joystick2.get_axis(1).real * 5, screen.get_height())
+        pl2.change_z(joystick2.get_axis(0).real * 5, screen.get_width())
+        pl2.draw_player(screen)
 
+def menu():
+    pass
 
 
 
