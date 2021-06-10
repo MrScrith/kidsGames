@@ -29,8 +29,8 @@ def main():
 
     prog_mode = GAME
 
-    screen = pygame.display.set_mode((900, 500))
-    #screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+    #screen = pygame.display.set_mode((900, 500))
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
     clock = pygame.time.Clock()
 
@@ -78,6 +78,9 @@ def main():
                 pygame.quit()
             if event.type in (pygame.JOYBALLMOTION, pygame.JOYHATMOTION, pygame.JOYBUTTONDOWN, pygame.JOYBUTTONUP):
                 print(str(event))
+                if joystick1.get_button(8) == 1:
+                    run = False
+                    pygame.quit()
 
     pygame.quit()
 
