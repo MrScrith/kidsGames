@@ -8,11 +8,20 @@ pygame.init()
 GAME = 0
 MENU = 1
 
+def menu():
+    pass
 
+def playgame(screen, pl1, pl2, joystick1, joystick2):
 
+    if pl1 is not None:
+        pl1.update_player(joystick1, screen)
+        pl1.draw_player(screen)
 
+    if pl2 is not None:
+        pl2.update_player(joystick2, screen)
+        pl2.draw_player(screen)
 
-if __name__ == '__main__':
+def main():
     pl1 = None
     pl2 = None
     joystick1 = None
@@ -36,7 +45,7 @@ if __name__ == '__main__':
         joystick2 = pygame.joystick.Joystick(1)
         joystick2.init()
         pl2 = player.Player()
-        print("Two Joystick found and initialized!")
+        print("Two Joysticks found and initialized!")
     elif pygame.joystick.get_count() > 0:
         joystick1 = pygame.joystick.Joystick(0)
         joystick1.init()
@@ -44,7 +53,13 @@ if __name__ == '__main__':
         pl1 = player.Player()
     else:
         print("No joystick.")
-    
+
+    print("Joystick found and initialized!")
+    print("There are " + str(joystick1.get_numaxes()) + " axes,")
+    print("There are " + str(joystick1.get_numbuttons()) + " buttons,")
+    print("There are " + str(joystick1.get_numhats()) + " hats on this joystick")
+
+
     run = True
     while run:
 
@@ -63,32 +78,12 @@ if __name__ == '__main__':
                 pygame.quit()
             if event.type in (pygame.JOYBALLMOTION, pygame.JOYHATMOTION, pygame.JOYBUTTONDOWN, pygame.JOYBUTTONUP):
                 print(str(event))
-            if event.type == pygame.JOYBUTTONDOWN:
-                print(str(joystick.get_button(0)))
-                if joystick.get_button(0) == 1:
-                    pl.next_color()
-                elif joystick.get_button(3) == 1:
-                    pl.prev_color()
-                elif joystick.get_button(5) == 1:
-                    pl.inc_size()
-                elif joystick.get_button(4) == 1:
-                    pl.dec_size()
 
-def playgame(screen, pl1, pl2, joystick1, joystick2):
+    pygame.quit()
 
-    pl1.change_y(joystick1.get_axis(1).real * 5, screen.get_height())
+if __name__ == '__main__':
+    main()
 
-    pl1.change_z(joystick1.get_axis(0).real * 5, screen.get_width())
-
-    pl1.draw_player(screen)
-
-    if joystick2 is not None:
-        pl2.change_y(joystick2.get_axis(1).real * 5, screen.get_height())
-        pl2.change_z(joystick2.get_axis(0).real * 5, screen.get_width())
-        pl2.draw_player(screen)
-
-def menu():
-    pass
 
 
 
