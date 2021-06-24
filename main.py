@@ -1,15 +1,12 @@
 import pygame
 import time
 
+from utils import *
 import colormain
 import gamemenu
+import colorfill
 
 pygame.init()
-
-MENU = 0
-DRAW = 1
-FILL = 2
-QUIT = 99
 
 # Current list of games, more to be added later.
 gameList = ["Draw Colors", "Color Fill"]
@@ -24,6 +21,9 @@ def Main():
     clock = pygame.time.Clock()
 
     gameObj = gamemenu.GameMenu(screen, js1, js2)
+    gameMode = GAMELIST.MENU
+
+    buttonPressTime = 0
 
     run = True
     while run:
@@ -42,8 +42,9 @@ def Main():
                 # If the "start" button is pressed for more than 2 seconds quit game.
                 if event.button == 8:
                     if time.time() - buttonPressTime > 2:
-                        gameMode = MENU
+                        gameMode = GAMELIST.MENU
                         del gameObj
+                        gameObj = gamemenu.GameMenu(screen, js1, js2)
 
             if event.type == pygame.JOYBUTTONDOWN:
                 print(str(event))
@@ -56,10 +57,24 @@ def Main():
                 elif js2 is None:
                     js2 = pygame.joystick.Joystick(int(event.device_index))
 
+                gameMode = GAMELIST.MENU
+                del gameObj
+                gameObj = gamemenu.GameMenu(screen, js1, js2)
+
         # last option
-        if not gameObj.run(eventList):
+        newMode = gameObj.run(eventList)
+        if newMode != gameMode:
             del gameObj
-            gameObj = gamemenu.GameMenu(screen, js1, js2)
+            gameMode = newMode
+            if gameMode == GAMELIST.MENU:
+                gameObj = gamemenu.GameMenu(screen, js1, js2)
+            elif gameMode == GAMELIST.DRAW:
+                gameObj = colormain.ColorMain(screen, js1, js2)
+            elif gameMode == GAMELIST.FILL:
+                gameObj = colorfill.ColorFill(screen, js1, js2)
+            elif gameMode == GAMELIST.QUIT:
+                run = False
+
 
     pygame.quit()
 
