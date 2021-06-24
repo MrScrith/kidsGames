@@ -1,8 +1,8 @@
 from utils import *
-import colorplayer
+import colordrawplayer
 
 
-class ColorMain:
+class ColorDraw:
 
     screen = None
     pl1 = None
@@ -12,9 +12,9 @@ class ColorMain:
         self.screen = inscreen
 
         if js1 is not None:
-            self.pl1 = colorplayer.ColorPlayer(js1)
+            self.pl1 = colordrawplayer.ColorDrawPlayer(js1)
         if js2 is not None:
-            self.pl2 = colorplayer.ColorPlayer(js1)
+            self.pl2 = colordrawplayer.ColorDrawPlayer(js1)
 
     def run(self, events):
 

@@ -2,7 +2,7 @@ import pygame
 import time
 
 from utils import *
-import colormain
+import colordraw
 import gamemenu
 import colorfill
 
@@ -66,10 +66,11 @@ def Main():
         if newMode != gameMode:
             del gameObj
             gameMode = newMode
+            screen.fill(COLORS.GRAY) # blank(ish) the screen for the new game.
             if gameMode == GAMELIST.MENU:
                 gameObj = gamemenu.GameMenu(screen, js1, js2)
             elif gameMode == GAMELIST.DRAW:
-                gameObj = colormain.ColorMain(screen, js1, js2)
+                gameObj = colordraw.ColorDraw(screen, js1, js2)
             elif gameMode == GAMELIST.FILL:
                 gameObj = colorfill.ColorFill(screen, js1, js2)
             elif gameMode == GAMELIST.QUIT:

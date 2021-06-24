@@ -5,11 +5,6 @@ from utils import *
 
 pygame.init()
 
-GRAY = (120, 120, 120)
-YELLOW = (255, 255, 0)
-LTBLUE = (120, 120, 255)
-BLACK = (0, 0, 0)
-
 # First position is "menu", so drop them back a hair
 POS = (0, 50, 90, 130, 170, 210, 250, 290, 330, 370) # expand as needed.
 
@@ -31,12 +26,11 @@ class GameMenu:
 
     def run(self, events):
 
-        self._screen.fill(GRAY)
+        self._screen.fill(COLORS.GRAY)
 
         retval = GAMELIST.MENU
 
         # Drawing game
-        print("selected: " + str(self._selected))
         self.drawMenuBox(GAMELIST.DRAW, "Drawing Game")
         self.drawMenuBox(GAMELIST.FILL, "Color Fill")
         self.drawMenuBox(GAMELIST.QUIT, "QUIT")
@@ -95,10 +89,10 @@ class GameMenu:
         center = self._screen.get_width() / 2
 
         if self._selected == index:
-            pygame.draw.rect(self._screen, YELLOW, [center - 105, POS[index] - 15, 210, 30])
+            pygame.draw.rect(self._screen, COLORS.YELLOW, [center - 105, POS[index] - 15, 210, 30])
 
-        pygame.draw.rect(self._screen, LTBLUE, [center - 100, POS[index] - 10, 200, 20])
+        pygame.draw.rect(self._screen, COLORS.LTBLUE, [center - 100, POS[index] - 10, 200, 20])
 
-        text = self._textfont.render(title, True, BLACK)
+        text = self._textfont.render(title, True, COLORS.BLACK)
 
         self._screen.blit(text, (center - (text.get_width() / 2), POS[index] - 8))

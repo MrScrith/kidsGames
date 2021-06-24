@@ -1,26 +1,18 @@
 import pygame
 import sys
+from utils import *
 SQUARE = 0
 CIRCLE = 1
 
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-YELLOW = (255, 255, 0)
-BLUE = (0, 0, 255)
-GREEN = (0, 255, 0)
-PINK = (255, 125, 125)
-
-
-class ColorPlayer:
-    _color = BLUE
+class ColorDrawPlayer:
+    _color = COLORS.color_list[0]
     _color_index = 0
     _curShape = SQUARE
     _size = 10
     _js = None
-    _active = False
+    _active = True
 
-    _color_list = [BLUE, WHITE, BLACK, RED, YELLOW, GREEN, PINK]
+    _color_list = COLORS.color_list
 
     _press_list = {0: False, 1: False, 2: False, 3: False, 4: False, 5: False, 6: False, 7: False, 8: False, 9: False}
 
@@ -139,10 +131,10 @@ class ColorPlayer:
 
 
     def __init__(self, joystick):
-        self.color = RED
+        self.color = self._color_list[0]
         self._curShape = SQUARE
         self._curX = 100
         self._curY = 100
         self._js = joystick
-        self._active = False
+        self._active = True
 
