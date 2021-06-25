@@ -18,5 +18,7 @@ class COLORS():
     BLUE = (0, 0, 255)
     GREEN = (0, 255, 0)
     PINK = (255, 125, 125)
+    ORANGE = (255, 0x58, 00)
+    PURPLE = (0xBF, 0, 255)
 
-    color_list = [BLUE, WHITE, BLACK, RED, YELLOW, GREEN, PINK, LTBLUE]
+    color_list = [BLUE, WHITE, BLACK, RED, YELLOW, GREEN, PINK, LTBLUE, ORANGE]

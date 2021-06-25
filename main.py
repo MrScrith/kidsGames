@@ -15,8 +15,8 @@ def Main():
     js1 = None
     js2 = None
 
-    screen = pygame.display.set_mode((900, 500))
-    #screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+    screen = pygame.display.set_mode((900, 500), pygame.DOUBLEBUF, 32)
+    #screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN & pygame.DOUBLEBUF, 32)
 
     clock = pygame.time.Clock()
 
