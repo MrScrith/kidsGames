@@ -2,6 +2,12 @@ import pygame
 from utils import *
 import colorfillsquare
 
+GAMEPLAYING = 0
+GAMEOVER = 1
+GAMEWON = 2
+
+
+
 class ColorFill:
 
     _screen = None
@@ -13,7 +19,7 @@ class ColorFill:
 
     # Set values, height (0), width (0)
     _squarecount = (17, 17)
-    _movecount = -1
+    _movecount = 0
     _maxmoves = 30
 
     # Playboard calculations, determined based on screen size.
@@ -51,7 +57,6 @@ class ColorFill:
         self._margins = ((height * 0.05), (width * 0.05), (height * 0.05), (width * 0.05))
         self._selectorborder = self._margins[2]  # for moment same as bottom margin
         self._movesborder = self._margins[3]     # for the moment same as left margin
-
 
         tmpheight = (height * 0.9)
         tl = (tmpheight - self._maxmoves - 1) % self._maxmoves
@@ -109,17 +114,9 @@ class ColorFill:
                 if j < self._squarecount[1] - 1:
                     self._squareList[i][j].square_left = self._squareList[i][j + 1]
 
-        print("current: " + str(self._curColor))
-        print("next: " + str(self._nextColor))
-        print("square: " + str(self._squareList[0][0].CurrentColor()))
-
         self._nextColor = self._squareList[0][0].CurrentColor()
         self._squareList[0][0].SpreadColor(self._curColor, self._nextColor, colorfillsquare.UP)
         self._curColor = self._nextColor
-
-        print("current: " + str(self._curColor))
-        print("next: " + str(self._nextColor))
-        print("square: " + str(self._squareList[0][0].CurrentColor()))
 
         self._pressdict[1] = True
 
@@ -128,6 +125,13 @@ class ColorFill:
         buttonPressTime = 0
 
         self.drawGame()
+
+        stat = self._CheckGameEnd()
+
+        if GAMEPLAYING != stat:
+            self._movecount = 0
+            self.__init__(self._screen, self._js1, self._js2)
+
 
         return GAMELIST.FILL
 
@@ -143,7 +147,6 @@ class ColorFill:
         self._DrawColorSelector()
 
         if self._curColor != self._nextColor:
-            print("now spreading color " + str(self._nextColor))
             self._squareList[0][0].SpreadColor(self._curColor, self._nextColor, colorfillsquare.UP)
             self._curColor = self._nextColor
             self._movecount += 1
@@ -170,6 +173,8 @@ class ColorFill:
             elif (self._js1.get_axis(0).real < 0.1) and (self._js1.get_axis(0).real > -0.1):
                 self._pressdict["right"] = False
                 self._pressdict["left"] = False
+
+
 
 
     def _DrawMoveCounter(self):
@@ -243,6 +248,28 @@ class ColorFill:
         for i in range(0, self._squarecount[0]): # Vertical line
             for j in range(0, self._squarecount[1]): # Horizontal line
                 self._squareList[i][j].DrawSquare(self._screen, 0)
+
+    def _CheckGameEnd(self):
+
+        retval = GAMEPLAYING
+
+        offcount = 0
+
+        for i in range(0, self._squarecount[0]): # Vertical line
+            for j in range(0, self._squarecount[1]): # Horizontal line
+                if self._squareList[i][j].CurrentColor() != self._curColor:
+                    offcount = 1
+                    break
+            if offcount > 0:
+                break
+
+        if offcount > 0 and self._movecount >= self._maxmoves:
+            retval = GAMEOVER
+        elif offcount == 0 and self._movecount < self._maxmoves:
+            retval = GAMEWON
+
+        return retval
+
 
 
 
