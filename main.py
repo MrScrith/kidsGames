@@ -14,6 +14,7 @@ gameList = ["Draw Colors", "Color Fill"]
 def Main():
     js1 = None
     js2 = None
+    jscount = 0
 
     screen = pygame.display.set_mode((900, 500), pygame.DOUBLEBUF, 32)
     #screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN & pygame.DOUBLEBUF, 32)
@@ -50,16 +51,27 @@ def Main():
                 print(str(event))
                 if event.button == 8:
                     buttonPressTime = time.time()
+            if pygame.version.vernum[0] > 1:
+                if event.type == pygame.JOYDEVICEADDED:
+                    if js1 is None:
+                        js1 = pygame.joystick.Joystick(int(event.device_index))
+                    elif js2 is None:
+                        js2 = pygame.joystick.Joystick(int(event.device_index))
 
-            if event.type == pygame.JOYDEVICEADDED:
-                if js1 is None:
-                    js1 = pygame.joystick.Joystick(int(event.device_index))
-                elif js2 is None:
-                    js2 = pygame.joystick.Joystick(int(event.device_index))
+                    gameMode = GAMELIST.MENU
+                    del gameObj
+                    gameObj = gamemenu.GameMenu(screen, js1, js2)
+            else:
+                if pygame.joystick.get_count() > jscount:
+                    jscount = pygame.joystick.get_count()
+                    if js1 is None:
+                        js1 = pygame.joystick.Joystick(0)
+                    elif js2 is None and jscount > 1:
+                        js2 = pygame.joystick.Joystick(1)
 
-                gameMode = GAMELIST.MENU
-                del gameObj
-                gameObj = gamemenu.GameMenu(screen, js1, js2)
+                    gameMode = GAMELIST.MENU
+                    del gameObj
+                    gameObj = gamemenu.GameMenu(screen, js1, js2)
 
         # last option
         newMode = gameObj.run(eventList)
